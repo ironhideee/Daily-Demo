@@ -77,5 +77,4 @@ s2 // Symbol(bar)
 s1.toString() // "Symbol(foo)"
 s2.toString() // "Symbol(bar)"
 
-
 //6、Map 和 Set 结构，Generator 函数
