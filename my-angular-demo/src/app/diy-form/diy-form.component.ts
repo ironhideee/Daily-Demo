@@ -26,21 +26,21 @@ export class DiyFormComponent implements OnInit {
   ]
 
   formList = [];
-  obj = {
-    name: '',
-    require: null,
-    key: '',
-    type: null,
-    length: '',
-    option: ['']
-  }
 
   ngOnInit() {
   }
 
   startDiy(){
+    let obj = {
+      name: '',
+      require: null,
+      key: '',
+      type: null,
+      length: '',
+      option: ['']
+    }
     if(this.formList.length == 0){
-      this.formList.push(this.obj);
+      this.formList.push(obj);
     }
   }
 
@@ -49,7 +49,15 @@ export class DiyFormComponent implements OnInit {
       this.message.create('warning', `最多配置10个表单控件`);
       return;
     }
-    this.formList.splice(i+1,0,this.obj);
+    let obj = {
+      name: '',
+      require: null,
+      key: '',
+      type: null,
+      length: '',
+      option: ['']
+    }
+    this.formList.splice(i+1,0,obj);
   }
 
   delWidget(i){
@@ -57,11 +65,13 @@ export class DiyFormComponent implements OnInit {
   }
 
   addItem(i,k){
+    console.log(i,k)
     if(this.formList[i].option.length >= 10){
       this.message.create('warning', `每个自定义选项最多配置10个选项`);
       return;
     }
     this.formList[i].option.splice(k+1,0,'');
+    console.log(this.formList)
   }
 
   delItem(i,k){
