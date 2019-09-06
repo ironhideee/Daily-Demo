@@ -1,3 +1,59 @@
-<p>
-  diy-form works!
-</p>
+<div>
+  <i nz-icon [nzType]="'plus'" class="btnIcon add_form_btn" (click)="startDiy()"></i>
+</div>
+<div *ngFor="let item of formList; let i = index">
+  <div class="form_item">
+    <nz-form-item nzFlex nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="6">字段名称：</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="item.name">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nzFlex nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="6">是否必填：</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-select style="width: 200px;" [(ngModel)]="item.required" nzPlaceHolder="请选择">
+          <nz-option nzValue="1" nzLabel="必填"></nz-option>
+          <nz-option nzValue="2" nzLabel="非必填"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nzFlex nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="6">提示信息：</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="item.key">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nzFlex nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="6">控件类型：</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-select style="width: 200px;" [(ngModel)]="item.type" (ngModelChange)="log($event)" nzPlaceHolder="请选择">
+          <nz-option *ngFor="let option of optionList" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nzFlex nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="6">限制长度：</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="item.length">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item nzFlex nz-col [nzSpan]="8">
+      <nz-form-label [nzSpan]="6">自定义选项：</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <div *ngFor="let child of item.option; trackBy: trackByIndex; let k = index">
+          <input nz-input class="option_input" [(ngModel)]="item.option[k]">
+          <i nz-icon [nzType]="'close'" class="btnIcon closeBtn" (click)="delItem(i,k)" *ngIf='item.option.length>1'></i>
+          <i nz-icon [nzType]="'plus'" class="btnIcon plusBtn" (click)="addItem(i,k)"></i>
+        </div>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <i nz-icon [nzType]="'delete'" class="btnIcon add_del_Btn" (click)="delWidget(i)"></i>
+  <i nz-icon [nzType]="'plus'" class="btnIcon add_del_Btn" (click)="addWidget(i)"></i>
+</div>
