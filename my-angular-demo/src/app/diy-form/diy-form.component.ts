@@ -25,7 +25,15 @@ export class DiyFormComponent implements OnInit {
     { label: '多选框', value: '4' }
   ]
 
+  //自定义属性
   formList = [];
+  //表单参数
+  needExtArr = [];
+  //表单属性
+  formDataArr = [];
+
+  isVisible:boolean = false;
+  isOkLoading = false;
 
   ngOnInit() {
   }
@@ -65,13 +73,11 @@ export class DiyFormComponent implements OnInit {
   }
 
   addItem(i,k){
-    console.log(i,k)
     if(this.formList[i].option.length >= 10){
       this.message.create('warning', `每个自定义选项最多配置10个选项`);
       return;
     }
     this.formList[i].option.splice(k+1,0,'');
-    console.log(this.formList)
   }
 
   delItem(i,k){
@@ -83,6 +89,39 @@ export class DiyFormComponent implements OnInit {
 
   trackByIndex(index,item){
     return index;
+  }
+
+  showForm(){
+    console.log(this.formList)
+    let widdleware = JSON.parse(JSON.stringify(this.formList));
+    widdleware.forEach(item => {
+      if(item.type == 4){
+        let arr = [];
+        item.option.forEach(element => {
+          arr.push({label: element, value: element, checked:false})
+        });
+        item.option = arr;
+      }
+    });
+    this.formDataArr = widdleware;
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.isOkLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isOkLoading = false;
+    }, 3000);
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  //保存checkbox选择结果
+  checkChange(i,arr){
+    console.log(arr)
   }
 
 }

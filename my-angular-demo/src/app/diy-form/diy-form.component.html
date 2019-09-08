@@ -1,5 +1,6 @@
 <div>
   <i nz-icon [nzType]="'plus'" class="btnIcon add_form_btn" (click)="startDiy()"></i>
+  <button nz-button nzType="primary" (click)="showForm()">保存并预览表单</button>
 </div>
 <div *ngFor="let item of formList; let i = index">
   <div class="form_item">
@@ -13,7 +14,7 @@
     <nz-form-item nzFlex nz-col [nzSpan]="8">
       <nz-form-label [nzSpan]="6">是否必填：</nz-form-label>
       <nz-form-control [nzSpan]="14">
-        <nz-select style="width: 200px;" [(ngModel)]="item.required" nzPlaceHolder="请选择">
+        <nz-select style="width: 200px;" [(ngModel)]="item.require" nzPlaceHolder="请选择">
           <nz-option nzValue="1" nzLabel="必填"></nz-option>
           <nz-option nzValue="2" nzLabel="非必填"></nz-option>
         </nz-select>
@@ -30,20 +31,20 @@
     <nz-form-item nzFlex nz-col [nzSpan]="8">
       <nz-form-label [nzSpan]="6">控件类型：</nz-form-label>
       <nz-form-control [nzSpan]="14">
-        <nz-select style="width: 200px;" [(ngModel)]="item.type" (ngModelChange)="log($event)" nzPlaceHolder="请选择">
+        <nz-select style="width: 200px;" [(ngModel)]="item.type" nzPlaceHolder="请选择">
           <nz-option *ngFor="let option of optionList" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
         </nz-select>
       </nz-form-control>
     </nz-form-item>
 
-    <nz-form-item nzFlex nz-col [nzSpan]="8">
+    <nz-form-item nzFlex nz-col [nzSpan]="8" *ngIf="item.type == 1 || item.type == 2">
       <nz-form-label [nzSpan]="6">限制长度：</nz-form-label>
       <nz-form-control [nzSpan]="14">
         <input nz-input [(ngModel)]="item.length">
       </nz-form-control>
     </nz-form-item>
 
-    <nz-form-item nzFlex nz-col [nzSpan]="8">
+    <nz-form-item nzFlex nz-col [nzSpan]="8" *ngIf="item.type == 3 || item.type == 4">
       <nz-form-label [nzSpan]="6">自定义选项：</nz-form-label>
       <nz-form-control [nzSpan]="14">
         <div *ngFor="let child of item.option; trackBy: trackByIndex; let k = index">
@@ -57,3 +58,21 @@
   <i nz-icon [nzType]="'delete'" class="btnIcon add_del_Btn" (click)="delWidget(i)"></i>
   <i nz-icon [nzType]="'plus'" class="btnIcon add_del_Btn" (click)="addWidget(i)"></i>
 </div>
+
+
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="自定义表单预览" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+  <div>
+    <nz-form-item *ngFor="let item of formDataArr; i as index">
+      <nz-form-label [nzSpan]="6" [nzRequired]="item.require == 1">{{item.name}}</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="needExtArr[i]" *ngIf="item.type == 1 ">
+        <textarea nz-input [(ngModel)]="needExtArr[i]" *ngIf="item.type == 2 "></textarea>
+        <nz-select [(ngModel)]="needExtArr[i]" nzPlaceHolder="请选择" *ngIf="item.type == 3 ">
+          <nz-option *ngFor="let option of item.option" [nzValue]="option" [nzLabel]="option"></nz-option>
+        </nz-select>
+        <nz-checkbox-group [(ngModel)]="item.option" (ngModelChange)="checkChange(i,$event)" *ngIf="item.type == 4 "></nz-checkbox-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</nz-modal>
