@@ -54,3 +54,57 @@ getNum1().then(function(data){
 }).then(function(data){
     console.log(data)
 })
+
+
+const promise1 = new Promise ((resolve,reject) => {
+    setTimeout(resolve('100'),1000)
+})
+const promise2 = new Promise ((resolve,reject) => {
+    setTimeout(resolve('200'),1000)
+})
+const promise3 = new Promise ((resolve,reject) => {
+    setTimeout(resolve('300'),1000)
+})
+
+Promise.all([promise1,promise2,promise3]).then(value => {
+    console.log(value)
+})
+
+//案例一
+// 封装地形 GeoJSON 数据接口
+// 将每个数据接口封装为一个返回 Promise 的函数
+function getArea () {
+    return new Promise((resolve, reject) => {
+      fetch('./resources/china.json').then(resp =>
+        resp.json().then(china => resolve(china))
+      )
+    })
+  }
+  
+  // 封装分色地图数据接口
+  function getPopulation () {
+    return new Promise((resolve, reject) => {
+      fetch('./resources/china-population.json').then(resp =>
+        resp.json().then(data => resolve(data))
+      )
+    })
+  }
+  
+  // 封装城市数据接口
+  function getCity () {
+    return new Promise((resolve, reject) => {
+      fetch('./resources/city.json').then(resp =>
+        resp.json().then(data => resolve(data))
+      )
+    })
+  }
+  
+  // 使用 Promise.all 以在三个数据接口均异步成功后，执行回调逻辑
+  Promise.all([getArea(), getPopulation(), getCity()]).then(values => {
+    // 依次从返回的数据接口数组中获取不同接口数据
+    let china = values[0]
+    let population = values[1]
+    let city = values[2]
+    // 使用数据
+    doWithData(china, population, city)
+  })
