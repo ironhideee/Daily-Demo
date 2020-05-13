@@ -1,0 +1,5 @@
+<p>this is parent component!</p>
+<button (click)="click()">click</button>
+<button (click)="refresh()">refresh</button>
+<p>点击次数：{{obj[obj.length-1]?.time}}</p>
+<app-child [clickTime]="obj"></app-child>
